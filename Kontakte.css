@@ -1,0 +1,17 @@
+.header #logo{
+width:80%;
+}
+
+.header .logoWrapper{
+text-align:center;
+/*border: 1px solid red;*/
+}
+
+.header .logoutButton{
+padding:4%;
+}
+
+.search .myinput{
+width: 150px;
+margin:10px auto 0 auto;
+}
