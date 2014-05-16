@@ -46,6 +46,15 @@ margin-top:40%;
 font-size: 1.4em;
 }
 
+.deleteContactButtonWrapper{
+margin-top:2%;
+width: 100%;
+}
+
+.deleteContactButton{
+width:80%;
+}
+
 .profilePicture{
 width: 50%;
 
