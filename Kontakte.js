@@ -57,12 +57,19 @@ addContact = function(newName){
 	//console.log(newName);
 	var contact = {
 		name: newName,
+		id:[]
 		//email: newEmail,
 		//pw: newPw,
 	  };
 	  Contacts._collection.insert(contact);
-	
+	console.log(contact.name + " " + contact.id); 
 } 
+
+
+deleteContact = function(deleteId){
+console.log("delete user with id: "+deleteId); 
+}
+
 
 
 Template.contact_list.contacts = function(){

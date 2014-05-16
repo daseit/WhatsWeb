@@ -7,8 +7,12 @@
 <template name="contact_item">
     <div class="row">
         <div class="col-md-2"><img src="hamster.jpg" class="profilePicture"></div>
-        <div class="col-md-10 profileNameWrapper">
+        <div class="col-md-9 profileNameWrapper">
 				<span class="profileName">{{name}}</span>
+		</div>
+		<div class="col-md-1 deleteContactButtonWrapper">
+			<input type="image" src="delete.png" class="deleteContactButton" 
+				onclick="deleteContact({{id}});">
 		</div>
     </div>
 </template>
@@ -18,7 +22,8 @@
     <div class="contactHeader">
 		<div class="col-xs-3"><h1>Kontakte</h1></div>
 		<div class="col-xs-6"></div>
-		<div class="col-xs-3 addContactButton"><input type="image" src="add_contact.jpg" id="add" data-toggle="modal" data-target="#myModal"><p></p></div>
+		<div class="col-xs-3 addContactButton">
+			<input type="image" src="add_contact.jpg" id="add" data-toggle="modal" data-target="#myModal"><p></p></div>
 	</div>
 		
 	
