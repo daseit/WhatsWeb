@@ -1,78 +1,66 @@
-<head>
-	<title>WhatsWeb</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap-theme.min.css">
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
-</head>
+<template name="Chat">
+<div class="col-sm-1">
+</div>
+<div class="col-sm-10 well">
 
-<body>
-	<div class="container-fluid">
-		<div class="row">
-			{{> enter_message}}
-		</div>
-	</div>
-</body>
 
-<template name="enter_message">
-	<div class="col-sm-1">
-	</div>
-	<div class="col-sm-10 well"> 
-	
-	
-		<div class="row">
-			<div class="form-group">
-				<label for="messageBox" class="control-label col-sm-3">Message {{greeting}} </label>
-				<div class="col-sm-7">
-					<input type="text" class="form-control" id="message" placeholder="Your Message"/>
-				</div>
-				<div class="col-sm-2">
-					<button type="button" rel="tooltip" title="Send" class="btn btn-success btn-md sendbtn">
-						<span class="glyphicon glyphicon-send"></span> Click 
-					</button>
-					<button type="button" rel="tooltip" title="Send" class="btn btn-success btn-md addbtn">
-						 Add Friend 
-					</button>
-				</div>
+<div class="row">
+<div class="form-group">
+<label for="messageBox" class="control-label col-sm-3">Message {{greeting}} </label>
+<div class="col-sm-7">
+<input type="text" class="form-control" id="loginName" placeholder="Dein Name"/>
+<input type="text" class="form-control" id="message" placeholder="Your Message"/>
+</div>
+<div class="col-sm-2">
+<button type="button" id="btnAnmelden"  rel="tooltip" title="Anmelden" class="btn btn-success btn-md">
+<span class="glyphicon glyphicon-send"></span> Anmelden
+</button>
+<button type="button" rel="tooltip" title="Send" class="btn btn-success btn-md sendbtn">
+<span class="glyphicon glyphicon-send"></span> Click
+</button>
+<button type="button" rel="tooltip" title="Send" class="btn btn-success btn-md addbtn">
+Add Friend
+</button>
+</div>
 
-			</div>
-		</div>
-		
-		
-		
-	<div class="row col-sm-6"  >
-	        {{#if hasFriends}}
-				{{> friends_list}}
-			{{else}}
-				No Messages
-	        {{/if}}
-		</div>
-		
-		
-		
-		
-		<div class="row col-sm-6"  >
-	        {{#if hasMessages}}
-				{{> messages_list}}
-			{{else}}
-				No Messages
-	        {{/if}}
-		</div>
-		
-			
-		
-		
-	</div>
+</div>
+</div>
+
+
+
+<div class="row col-sm-6" >
+{{#if hasFriends}}
+{{> friends_list}}
+{{else}}
+No Messages
+{{/if}}
+</div>
+
+
+
+
+<div class="row col-sm-6" >
+{{#if hasMessages}}
+{{> messages_list}}
+{{else}}
+No Messages
+{{/if}}
+</div>
+
+
+
+
+</div>
 </template>
 
 
-<template name="friends_list">       
-		<div class="col-md-6 col-md-4 sidebar-offcanvas" id="sidebar" role="navigation">
-		<div class="list-group">	
-    {{#each friends}}	
-			{{> friend_item}}	    
+<template name="friends_list">
+<div class="col-md-6 col-md-4 sidebar-offcanvas" id="sidebar" role="navigation">
+<div class="list-group">	
+    {{#each friends}}
+{{> friend_item}}
     {{/each}}
- </div>        
+ </div>
         </div><!--/span-->
 </template>
 
@@ -85,25 +73,24 @@
 
 
 <template name="friend_item">
-		
-          <a href="#" class="list-group-item active">{{name}}</a> 
+
+          <a href="#" class="list-group-item active friendList">{{name}}</a>
           
- <!--  <div class="col-sm-8">{{name}}</div> -->
+ <!-- <div class="col-sm-8">{{name}}</div> -->
 </template>
 
 <template name="message_item">
     <div class="row" style="margin-left:auto;margin-right:auto ">
-	
-        <div class="col-sm-8" style = "float:left">{{time}}</div>
+
+        <div class="col-sm-8" style = "float:left">{{timestamp}}</div>
         <div class="col-sm-1">
             <button type="button" title="Delete" class="btn btn-default btn-xs trashbtn" >
-					<span class="glyphicon glyphicon-trash"></span> 	 Delete 
-					</button>
+<span class="glyphicon glyphicon-trash"></span> Delete
+</button>
          </div>
-		
+
         <div class="col-sm-8">{{message}}</div>
-	
-	
+
+
     </div>
 </template>
-

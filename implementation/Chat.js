@@ -1,71 +1,19 @@
-counter = function() {
-  var that = {};
-  var counter = 0;
-  that.add = function() {
-    ++counter;
-    return counter;
-  };
-  return that;
-}();
-
-Friends = new Meteor.Collection('friends');
-
-Histories = new Meteor.Collection('histories');
-Messages = new Meteor.Collection('messages');
-Users = new Meteor.Collection('users');
-
-
-addFriend = function( m_name){
-	var friend = {
-	
-		name: m_name
-	};
-	Friends.insert(friend);
-}
-
-addHistory = function (m_messages, receiver){
-	
-	var history={
-		key: receiver,
-		messages: m_messages
-	};
-	Histories.insert(history);
-}
-
-addUsers = function(usr){
-	var user={
-		name: usr,
-		id: []
-	};
-	
-}
-
-addMessage = function(m_msg, m_sender, m_receiver){
-  var timemilliseconds = (new Date()).getTime();
-  var message = {
-  
-    message: m_msg,
-    time: timemilliseconds,    
-	sender: m_sender,
-	receiver: m_receiver
-  };
-  Messages.insert(message);
-  
-}
 
 
 
 if (Meteor.isClient) {
   Session.set("counter", 0 );
-  Template.enter_message.greeting = function () {
-    // return "Version "  + Session.get("counter");
-    return " # "  + Messages.find().count() ;
+  Template.Chat.greeting = function () {
+    // return "Version " + Session.get("counter");
+	//var fs = Users.find().count();
+    return " # " + Messages.find().count() ;
   };
 
 $(document).ready(function(){
 //friend_item
    
-   $('.list-group-item').click(function(event){
+   $('.friendList').click(function(event){
+   	console.log("FRIENDLIST: !!! ");
         //remove all pre-existing active classes
         $('.active').removeClass('active');
         //add the active class to the link we clicked
@@ -73,65 +21,75 @@ $(document).ready(function(){
         //Load the content
         //e.g.
         //load the page that the link was pointing to
-        //$('#content').load($(this).find(a).attr('href'));      
+        //$('#content').load($(this).find(a).attr('href'));
         event.preventDefault();
     });
-});
+	
+	$('#btnAnmelden').click(function(event){
+		var name = $('#loginName').val();
+		console.log("buttonAnmelden: !!! "+ name);
+	});
+	
+	});
   
   
   /*Template.friends_list.friend_item.events({
-	/*'click .list-group-item': function(){
-		'.active'.removeClass('active');
-        //add the active class to the link we clicked
-        this.addClass('active');
-	}*/
-//  });
+/*'click .list-group-item': function(){
+'.active'.removeClass('active');
+//add the active class to the link we clicked
+this.addClass('active');
+}*/
+// });
   
   Template.messages_list.messages = function () {
-    var messages = Messages.find({}, { sort: { time: -1 }, limit: 7 }).fetch();
+   
+   var messages = Messages.find({}, { sort: { time: -1 }, limit: 70 }).fetch();
+   
     for(var i = 0; i < messages.length; ++i ) {
       var t = messages[i].time;
       var d = new Date(t);
       messages[i].time = d.toLocaleString();
     }
     return messages;
+	
   };
+  
 
-  Template.enter_message.hasMessages = function () {
+  Template.Chat.hasMessages = function () {
     return Messages.find().count() > 0;
   }
 
 
   
-  Template.enter_message.events({
+  Template.Chat.events({
     'click .addbtn': function () {
       // template data, if any, is available in 'this'
    
-		
+
         addFriend( "test");
-      //  Session.set("counter", Messages.find().count() );
+      // Session.set("counter", Messages.find().count() );
    
-    },  
+    },
 
   });
   
-   Template.enter_message.hasFriends = function () {
-    return Friends.find().count() > 0;
+   Template.Chat.hasFriends = function () {
+    return Users.find().count() > 0;
   }
   
   Template.friends_list.friends = function () {
-    var friends = Friends.find({}, {  limit: 700 }).fetch();
+    var friends = Users.find({}, { limit: 700 }).fetch();
    /* for(var i = 0; i < friends.length; ++i ) {
-      var t = friends[i].time;
-      var d = new Date(t);
-      friends[i].time = d.toLocaleString();
-    }*/
+var t = friends[i].time;
+var d = new Date(t);
+friends[i].time = d.toLocaleString();
+}*/
     return friends;
   };
 
   
 
-  Template.enter_message.events({
+  Template.Chat.events({
     'click .sendbtn': function () {
       // template data, if any, is available in 'this'
       var msg = document.getElementById('message').value.trim();
@@ -169,11 +127,3 @@ $(document).ready(function(){
 }
 
 
-
-
-if (Meteor.isServer) {
-  Meteor.startup(function () {
-    console.log("Server");
-    // code to run on server at startup
-  });
-}

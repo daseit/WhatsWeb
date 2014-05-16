@@ -1,7 +1,5 @@
 
-Users = new Meteor.Collection('myusers');
-Threads = new Meteor.Collection('threads');
-Messages = new Meteor.Collection('mymessages');
+
 
 
 
