@@ -1,179 +1,119 @@
-counter = function() {
-  var that = {};
-  var counter = 0;
-  that.add = function() {
-    ++counter;
-    return counter;
-  };
-  return that;
-}();
+/* global Messages, Users*/
 
-Friends = new Meteor.Collection('friends');
-
-Histories = new Meteor.Collection('histories');
-Messages = new Meteor.Collection('messages');
-Users = new Meteor.Collection('users');
-
-
-addFriend = function( m_name){
-	var friend = {
-	
-		name: m_name
-	};
-	Friends.insert(friend);
-}
-
-addHistory = function (m_messages, receiver){
-	
-	var history={
-		key: receiver,
-		messages: m_messages
-	};
-	Histories.insert(history);
-}
-
-addUsers = function(usr){
-	var user={
-		name: usr,
-		id: []
-	};
-	
-}
-
-addMessage = function(m_msg, m_sender, m_receiver){
-  var timemilliseconds = (new Date()).getTime();
-  var message = {
-  
-    message: m_msg,
-    time: timemilliseconds,    
-	sender: m_sender,
-	receiver: m_receiver
-  };
-  Messages.insert(message);
-  
-}
-
-
+// TODO: demo db
+var demoMsgDB = new Meteor.Collection('demoMsg');
 
 if (Meteor.isClient) {
-  Session.set("counter", 0 );
-  Template.enter_message.greeting = function () {
-    // return "Version "  + Session.get("counter");
-    return " # "  + Messages.find().count() ;
-  };
 
-$(document).ready(function(){
-//friend_item
-   
-   $('.list-group-item').click(function(event){
-        //remove all pre-existing active classes
-        $('.active').removeClass('active');
-        //add the active class to the link we clicked
-        $(this).addClass('active');
-        //Load the content
-        //e.g.
-        //load the page that the link was pointing to
-        //$('#content').load($(this).find(a).attr('href'));      
-        event.preventDefault();
+    Session.set('counter', 0 );
+    Template.Chat.greeting = function () {
+        'use strict';
+
+        return 'Du hast insgesamt ' + demoMsgDB.find().count() + ' Nachricht(en).' ;
+    };
+
+    $(document).ready(function(){
+        'use strict';
+
+        $('.friendList').click(function(event){
+            
+            //remove all pre-existing active classes
+            $('.active').removeClass('active');
+            
+            //add the active class to the link we clicked
+            $(this).addClass('active');
+            
+            //Load the content
+            //e.g.
+            //load the page that the link was pointing to
+            //$('#content').load($(this).find(a).attr('href'));
+            event.preventDefault();
+        });
+
+        $('#btnAnmelden').click(function(event){
+            var name = $('#loginName').val();
+            console.log("buttonAnmelden: !!! "+ name);
+        });
     });
-});
-  
-  
-  /*Template.friends_list.friend_item.events({
-	/*'click .list-group-item': function(){
-		'.active'.removeClass('active');
-        //add the active class to the link we clicked
-        this.addClass('active');
-	}*/
-//  });
-  
-  Template.messages_list.messages = function () {
-    var messages = Messages.find({}, { sort: { time: -1 }, limit: 7 }).fetch();
-    for(var i = 0; i < messages.length; ++i ) {
-      var t = messages[i].time;
-      var d = new Date(t);
-      messages[i].time = d.toLocaleString();
-    }
-    return messages;
-  };
 
-  Template.enter_message.hasMessages = function () {
-    return Messages.find().count() > 0;
-  }
+    var addMessage = function(senderId, receiverId, threadId, message) {
+        'use strict';
 
+        var insert = demoMsgDB.insert({
+            timestamp: (new Date()).getTime(),
+            message: message
+        });
 
-  
-  Template.enter_message.events({
-    'click .addbtn': function () {
-      // template data, if any, is available in 'this'
-   
-		
-        addFriend( "test");
-      //  Session.set("counter", Messages.find().count() );
-   
-    },  
+        return insert;
+    };
 
-  });
-  
-   Template.enter_message.hasFriends = function () {
-    return Friends.find().count() > 0;
-  }
-  
-  Template.friends_list.friends = function () {
-    var friends = Friends.find({}, {  limit: 700 }).fetch();
-   /* for(var i = 0; i < friends.length; ++i ) {
-      var t = friends[i].time;
-      var d = new Date(t);
-      friends[i].time = d.toLocaleString();
-    }*/
-    return friends;
-  };
+    Template.messages_list.messages = function () {
+        'use strict';
 
-  
+        var messages = demoMsgDB.find({}).fetch();
 
-  Template.enter_message.events({
-    'click .sendbtn': function () {
-      // template data, if any, is available in 'this'
-      var msg = document.getElementById('message').value.trim();
-      document.getElementById('message').value = "";
-      if (msg.length > 0) {
-        addMessage(msg);
-        Session.set("counter", Messages.find().count() );
-      }
-    },
-    'keyup #message': function (evt) {
-      // template data, if any, is available in 'this'
-      console.log("You pressed the button " + evt.which);
-      if (evt.which == 13) {
-        var msg = document.getElementById('message').value.trim();
-        document.getElementById('message').value = "";
-        if (msg.length > 0) {
-          addMessage(msg);
-          Session.set("counter", Messages.find().count() );
+        for(var i = 0; i < messages.length; i++ ) {
+            var t = messages[i].timestamp;
+            var d = new Date(t);
+            messages[i].time = d.toLocaleString();
         }
-      }
-    }
 
-  });
+        return messages;
+    };
+
+    Template.Chat.addMessage = function (senderId, receiverId, threadId, message) {
+        'use strict';
+
+        return addMessage(senderId, receiverId, threadId, message);
+    };
+
+    Template.Chat.hasMessages = function () {
+        'use strict';
+        return demoMsgDB.find().count() > 0;
+    };
 
 
-  
+    Template.Chat.hasFriends = function () {
+        'use strict';
+        return Users.find().count() > 0;
+    };
 
-  
-  Template.message_item.events({
-    'click .trashbtn': function () {
-      Messages.remove(this._id);
-    }
-  });
+    Template.friends_list.friends = function () {
+        'use strict';
+        
+        var friends = Users.find({}, { limit: 700 }).fetch();
+
+        return friends;
+    };
+
+    Meteor.methods({ deleteChat: function() {
+        'use strict';
+        console.debug('Warning: delete chat does not work at the moment!');
+        demoMsgDB.remove({message: {$gt: 0}});
+    }});
+
+    Template.Chat.events({
+        'click .chat .messageSendBtn': function () {
+            'use strict';
+
+            // check messageboxs value
+            var $messagebox = $('.chat #message');
+            var msg = $messagebox.val().trim();
+            $messagebox.val('');
+            
+            if (msg.length > 0) {
+                addMessage('Hans', 'Peter', 'Geheimer Chat', msg);
+            }
+        },
+
+        'click .chat .trashbtn': function () {
+            'use strict';
+            console.debug('remove');
+            Meteor.call('deleteChat');
+        },
+
+    });
 
 }
 
 
-
-
-if (Meteor.isServer) {
-  Meteor.startup(function () {
-    console.log("Server");
-    // code to run on server at startup
-  });
-}

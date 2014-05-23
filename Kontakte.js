@@ -1,3 +1,10 @@
+
+Users = new Meteor.Collection('myusers');
+Threads = new Meteor.Collection('threads');
+Messages = new Meteor.Collection('mymessages');
+
+
+
 if (Meteor.isClient) {
   //Template.hello.greeting = function () {
   //  return "Welcome to Kontakte.";
@@ -10,6 +17,8 @@ if (Meteor.isClient) {
         console.log("You pressed the button");
     }
   });*/
+
+  
   Session.set('currentPage', 'chatpage');
   tMain(Template.main);
   var AppRouter = Backbone.Router.extend({
@@ -38,13 +47,49 @@ if (Meteor.isClient) {
   Meteor.startup(function () {
     Backbone.history.start({ pushState: true });
   });
+
+ //contact list
+Contacts = new Meteor.Collection('contacts');
+
+//add new contact
+addContact = function(newName){
+	console.log("button pushed");
+	//console.log(newName);
+	var contact = {
+		name: newName,
+		id:[]
+		//email: newEmail,
+		//pw: newPw,
+	  };
+	  Contacts._collection.insert(contact);
+	console.log(contact.name + " " + contact.id); 
+} 
+
+
+deleteContact = function(deleteId){
+console.log("delete user with id: "+deleteId); 
+}
+
+
+
+Template.contact_list.contacts = function(){
+ if (Contacts.find().count() > 0)
+		 {
+			var contacts = Contacts.find({}, {}).fetch();
+			console.log(contacts.length);
+			for (var i = 0; i < contacts.length; ++i ) {
+				console.log(contacts[i].name);
+			//	if (i > 0 && contacts[i].name == contacts[contacts.length-1].name && i != (contacts.length-1) )
+			//		console.log("Message already exists => " + contacts[i].name);
+				//document.getElementById('result').value = contacts[i].name; 	
+			}
+		 }
+	return contacts;
+} 
 }
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
     // code to run on server at startup
-  });
-  
-  
-  
+  });  
 }
