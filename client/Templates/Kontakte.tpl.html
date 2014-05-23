@@ -1,18 +1,17 @@
-<template name="contact_list">
-    {{#each contacts}}
-    {{> contact_item}}
+<template name="xyz_friends_list">
+    {{#each friends}}
+    {{> friends_item}}
     {{/each}}
 </template>
 
-<template name="contact_item">
+<template name="friends_item">
     <div class="row">
         <div class="col-md-2"><img src="hamster.jpg" class="profilePicture"></div>
         <div class="col-md-9 profileNameWrapper">
-				<span class="profileName">{{name}}</span>
+				<span class="profileName" id="friendName">{{name}}</span>
 		</div>
 		<div class="col-md-1 deleteContactButtonWrapper">
-			<input type="image" src="delete.png" class="deleteContactButton" 
-				onclick="deleteContact({{id}});">
+			<input type="image" src="delete.png" class="deleteContactButton" />
 		</div>
     </div>
 </template>
@@ -29,7 +28,7 @@
 	
 	<div class="kontakte">
           <!-- <input type="text" id="result" name="user:" readonly="readonly"/> -->
-		  {{> contact_list}}
+		  {{> xyz_friends_list}}
     </div>
 
 	<!-- Modal -->
@@ -45,7 +44,7 @@
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			<button id="addContact" type="button" class="btn btn-primary" onclick="addContact(document.getElementById('username').value);">Kontakt hinzufügen</button>
+			<button id="addFriend" type="button" class="btn btn-primary" onclick="addFriend(document.getElementById('username').value);">Kontakt hinzufügen</button>
 		  </div>
 		</div>
 	  </div>
