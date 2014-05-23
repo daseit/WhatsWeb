@@ -1,8 +1,6 @@
 /* global Messages, Users*/
 
-// TODO: demo db
-var demoMsgDB = new Meteor.Collection('demoMsg');
-var demoUserDB = new Meteor.Collection('demoUser');
+
 
 if (Meteor.isClient) {
 
@@ -10,6 +8,13 @@ if (Meteor.isClient) {
     Session.set('chatSender', 'Hans');
     Session.set('chatReceiver', 'Petra');
 
+    // subscribe to demo databases
+    Meteor.subscribe('demoMsg');
+    Meteor.subscribe('demoUser');
+
+    // store copies of the demo databases on client
+    var demoMsgDB = new Meteor.Collection('demoMsg');
+    var demoUserDB = new Meteor.Collection('demoUser');
     
     Template.Chat.numberOfMessages = function () {
         'use strict';
