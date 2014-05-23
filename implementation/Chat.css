@@ -11,16 +11,37 @@
 .chat .friendlist,
 .chat .messages {
 	height: 400px;
-	overflow: scroll;
 }
 .chat .messages {
-	border: 1px solid #cccccc;
+	border: 1px solid #ddd;
 	padding: 3%;
-	border-radius: 5px;
+	border-radius: 0 5px 5px 5px;
+	overflow: scroll;
 }
 .chat .friendlist {
+	padding-right: 0px;
+	z-index: 100;
 }
-.chat .friendlist .listWrapper {
+.chat .listWrapper {
+	margin-right: -1px;
+}
+.chat .listWrapper .list-group-item:first-child {
+	border-top-right-radius: 0px !important;
+}
+.chat .listWrapper .list-group-item:last-child {
+	border-bottom-right-radius: 0px !important;
+}
+.chat .listWrapper .list-group-item {
+}
+.chat .listWrapper .list-group-item.active {
+	background: none !important;
+	background-image: none !important;
+	background-color: transparent !important;
+	text-shadow: none !important;
+	border-color: #ddd !important;
+	border-right-color: #fff !important;
+	border-left: 5px solid #C5E2FC !important;
+	color: #555;
 }
 .chat .trashbtn {
 	float: right;
@@ -35,6 +56,14 @@
 	border-radius: 8px;
 	padding: 10px;
 	background: #eeeeee;
+}
+.chat .messageRow .content.sender {
+	float: right;
+	background: #C5E2FC;
+}
+.chat .messageRow .content.receiver {
+	float: left;
+	background: #EEEEEE;
 }
 .chat .messageRow small {
 	color: #aaaaaa;

@@ -2,14 +2,19 @@
 
 // TODO: demo db
 var demoMsgDB = new Meteor.Collection('demoMsg');
+var demoUserDB = new Meteor.Collection('demoUser');
 
 if (Meteor.isClient) {
 
-    Session.set('counter', 0 );
-    Template.Chat.greeting = function () {
+    // session vars for current chat
+    Session.set('chatSender', 'Hans');
+    Session.set('chatReceiver', 'Petra');
+
+    
+    Template.Chat.numberOfMessages = function () {
         'use strict';
 
-        return 'Du hast insgesamt ' + demoMsgDB.find().count() + ' Nachricht(en).' ;
+        return Session.get('chatSender') + ', Du hast ' + demoMsgDB.find().count() + ' Nachricht(en).' ;
     };
 
     $(document).ready(function(){
@@ -17,23 +22,17 @@ if (Meteor.isClient) {
 
         $('.friendList').click(function(event){
             
-            //remove all pre-existing active classes
-            $('.active').removeClass('active');
+
             
-            //add the active class to the link we clicked
-            $(this).addClass('active');
-            
-            //Load the content
-            //e.g.
-            //load the page that the link was pointing to
-            //$('#content').load($(this).find(a).attr('href'));
-            event.preventDefault();
         });
 
-        $('#btnAnmelden').click(function(event){
-            var name = $('#loginName').val();
-            console.log("buttonAnmelden: !!! "+ name);
-        });
+        // set friend list item active
+        var $activeListElement = $('.friendlist a[name=' + Session.get('chatReceiver') + ']');
+        
+        if($activeListElement) {
+            $activeListElement.addClass('active');
+        }
+
     });
 
     var addMessage = function(senderId, receiverId, threadId, message) {
@@ -41,6 +40,8 @@ if (Meteor.isClient) {
 
         var insert = demoMsgDB.insert({
             timestamp: (new Date()).getTime(),
+            senderId: senderId,
+            receiverId: receiverId,
             message: message
         });
 
@@ -75,19 +76,32 @@ if (Meteor.isClient) {
 
     Template.Chat.hasFriends = function () {
         'use strict';
-        return Users.find().count() > 0;
+        return demoUserDB.find().count() > 0;
     };
 
     Template.friends_list.friends = function () {
         'use strict';
         
-        var friends = Users.find({}, { limit: 700 }).fetch();
+        var friends = demoUserDB.find({}, { limit: 700 }).fetch();
 
         return friends;
     };
 
+    Template.message_item.senderIs = function (sender) {
+        'use strict';
+        return Session.get('chatSender') === sender;
+    };
+    Template.message_item.receiverIs = function (receiver) {
+        'use strict';
+        return Session.get('chatReceiver') === receiver;
+    };
+
     Meteor.methods({ deleteChat: function() {
         'use strict';
+        // Meteor.methods needed for permissions. On client side only one element can
+        // be removed by default.
+        // TODO: no removing possible at the moment -> workarround: loop over all elements
+        // and delete them.
         console.debug('Warning: delete chat does not work at the moment!');
         demoMsgDB.remove({message: {$gt: 0}});
     }});
@@ -100,15 +114,17 @@ if (Meteor.isClient) {
             var $messagebox = $('.chat #message');
             var msg = $messagebox.val().trim();
             $messagebox.val('');
+
+            // TODO: only for testing
+            var sender = $('.chat #sender').val().trim();
             
             if (msg.length > 0) {
-                addMessage('Hans', 'Peter', 'Geheimer Chat', msg);
+                addMessage(sender, 'Petra', 'Geheimer Chat', msg);
             }
         },
 
         'click .chat .trashbtn': function () {
             'use strict';
-            console.debug('remove');
             Meteor.call('deleteChat');
         },
 
