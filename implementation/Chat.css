@@ -1,1 +1,56 @@
 /* CSS declarations go here */
+
+*, *:before, *:after {
+	-webkit-box-sizing: border-box !important;
+	-moz-box-sizing: border-box !important;
+	box-sizing: border-box !important;
+}
+
+/*
+---------------- friendlist & chat ---------------- */
+.chat .friendlist,
+.chat .messages {
+	height: 400px;
+	overflow: scroll;
+}
+.chat .messages {
+	border: 1px solid #cccccc;
+	padding: 3%;
+	border-radius: 5px;
+}
+.chat .friendlist {
+}
+.chat .friendlist .listWrapper {
+}
+.chat .trashbtn {
+	float: right;
+}
+
+/*
+-------------------- messages -------------------- */
+.chat .messageRow {
+	margin: 5px;
+}
+.chat .messageRow .content {
+	border-radius: 8px;
+	padding: 10px;
+	background: #eeeeee;
+}
+.chat .messageRow small {
+	color: #aaaaaa;
+}
+
+
+/*
+-------------------- footer -------------------- */
+.chat .footer {
+	margin: 20px 0;
+}
+.chat .messagebox {
+	width: 70%;
+	float: left;
+}
+.chat .messageSendBtn {
+	float: right;
+	width: 20%;
+}
