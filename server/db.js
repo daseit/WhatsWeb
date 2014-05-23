@@ -1,3 +1,12 @@
+// Use Meteor Accounts:
+//
+// Console commands:
+//> meteor remove autopublish
+//> meteor add accounts-base
+//> meteor add accounts-password
+//> meteor reset
+
+
 
 Threads = new Meteor.Collection('threads');
 Messages = new Meteor.Collection('mymessages');
