@@ -54,8 +54,10 @@
                 <div class="col-sm-8">
 
                     <!-- only for testing -->
-                    <input type="text" class="messageSender form-control" id="sender" value="Hans"/>
+                    Von: <input type="text" class="messageSender form-control" id="sender" value="Hans"/>
+                    An: <input type="text" class="messageReceiver form-control" id="receiver" value="Petra"/>
 
+                    Nachricht: <br>
                     <input type="text" class="messagebox form-control" id="message" placeholder="Schreibe eine Nachricht.."/>
 
                     <button type="button" rel="tooltip" title="Send" class="messageSendBtn btn btn-default btn-md">
@@ -99,7 +101,7 @@
     
     <div class="messageRow row">
 
-        {{#if senderIs senderId}}   
+        {{#if userIs senderId}}   
             <!-- sender -->
             <div class="content sender col-sm-8"> 
                 <i>{{senderId}}</i>: {{message}} <br>

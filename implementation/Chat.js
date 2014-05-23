@@ -5,8 +5,8 @@
 if (Meteor.isClient) {
 
     // session vars for current chat
-    Session.set('chatSender', 'Hans');
-    Session.set('chatReceiver', 'Petra');
+    Session.set('chatUser', 'Hans');
+    Session.set('chatMate', 'Martin');
 
     // subscribe to demo databases
     Meteor.subscribe('demoMsg');
@@ -19,7 +19,7 @@ if (Meteor.isClient) {
     Template.Chat.numberOfMessages = function () {
         'use strict';
 
-        return Session.get('chatSender') + ', Du hast ' + demoMsgDB.find().count() + ' Nachricht(en).' ;
+        return Session.get('chatUser') + ', Du hast ' + demoMsgDB.find().count() + ' Nachricht(en).' ;
     };
 
     $(document).ready(function(){
@@ -32,7 +32,7 @@ if (Meteor.isClient) {
         });
 
         // set friend list item active
-        var $activeListElement = $('.friendlist a[name=' + Session.get('chatReceiver') + ']');
+        var $activeListElement = $('.friendlist a[name=' + Session.get('chatMate') + ']');
         
         if($activeListElement) {
             $activeListElement.addClass('active');
@@ -56,7 +56,13 @@ if (Meteor.isClient) {
     Template.messages_list.messages = function () {
         'use strict';
 
-        var messages = demoMsgDB.find({}).fetch();
+        var messages = demoMsgDB.find({ 
+            $or: [
+                // only messages 1) chatMate -> chatUser or 2) chatUser -> chatMate
+                { $and: [ {receiverId: Session.get('chatUser')}, {senderId: Session.get('chatMate')}] },
+                { $and: [ {receiverId: Session.get('chatMate')}, {senderId: Session.get('chatUser')}] }
+            ]
+        });
 
         for(var i = 0; i < messages.length; i++ ) {
             var t = messages[i].timestamp;
@@ -92,13 +98,13 @@ if (Meteor.isClient) {
         return friends;
     };
 
-    Template.message_item.senderIs = function (sender) {
+    Template.message_item.userIs = function (user) {
         'use strict';
-        return Session.get('chatSender') === sender;
+        return Session.get('chatUser') === user;
     };
-    Template.message_item.receiverIs = function (receiver) {
+    Template.message_item.chateMateIs = function (chatMate) {
         'use strict';
-        return Session.get('chatReceiver') === receiver;
+        return Session.get('chatMate') === chatMate;
     };
 
     Meteor.methods({ deleteChat: function() {
@@ -111,6 +117,8 @@ if (Meteor.isClient) {
         demoMsgDB.remove({message: {$gt: 0}});
     }});
 
+
+    // ------------ eventlistener -----------------
     Template.Chat.events({
         'click .chat .messageSendBtn': function () {
             'use strict';
@@ -121,10 +129,11 @@ if (Meteor.isClient) {
             $messagebox.val('');
 
             // TODO: only for testing
+            var receiver = $('.chat #receiver').val().trim();
             var sender = $('.chat #sender').val().trim();
             
             if (msg.length > 0) {
-                addMessage(sender, 'Petra', 'Geheimer Chat', msg);
+                addMessage(sender, receiver, 'Geheimer Chat', msg);
             }
         },
 
@@ -133,6 +142,23 @@ if (Meteor.isClient) {
             Meteor.call('deleteChat');
         },
 
+        'click .friendlist' : function(e) {
+            'use strict';
+
+            var nextChatMate = e.target.name;
+            var prevChatMate = Session.get('chatMate');
+
+            Session.set('chatMate', nextChatMate);
+
+            // set new list focus
+            $('.friendlist a[name=' + prevChatMate + ']').removeClass('active');
+            $('.friendlist a[name=' + nextChatMate + ']').addClass('active');
+        }
+
+    });
+
+    Template.friends_list.events({
+        
     });
 
 }
