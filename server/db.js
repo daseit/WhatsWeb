@@ -7,11 +7,6 @@
 //> meteor reset
 
 
-
-Threads = new Meteor.Collection('threads');
-Messages = new Meteor.Collection('mymessages');
-
-
 Meteor.publish("threads", function (user) {
 	var userId = findUser(user);
 	return Threads.find({$or: [ {senderId: userId}, {receiverId: userId}]  }, {$sort: {timestamp: -1} } ).fetch();

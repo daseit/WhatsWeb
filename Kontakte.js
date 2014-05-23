@@ -1,5 +1,5 @@
 
-Users = new Meteor.Collection('myusers');
+// Users = new Meteor.Collection('myusers');
 Threads = new Meteor.Collection('threads');
 Messages = new Meteor.Collection('mymessages');
 
@@ -21,7 +21,7 @@ if (Meteor.isClient) {
 
   findUser = function(name) {
 	var id = 0;
-	var arr = Users.find({name: name}).fetch();
+	var arr = Meteor.users.find({name: name}).fetch();
 	console.log(arr.length);
 	if (arr.length == 0)
 		return 0;
