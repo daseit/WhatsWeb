@@ -12,8 +12,6 @@ Meteor.publish("threads", function (user) {
 	return Threads.find({$or: [ {senderId: userId}, {receiverId: userId}]  }, {$sort: {timestamp: -1} } ).fetch();
 });
 
-
-
 // server
 Meteor.publish("userData", function () {
   if (this.userId) {
@@ -34,10 +32,6 @@ Meteor.publish("myfriends", function () {
   return myFriends.find({});
   
 });
-
-
-
-
 
 function dateToString(date) {
 	function f0(d) {return (d <= 9 ? '0' + d : d);}
@@ -97,6 +91,15 @@ addMessage2Thread = function (sender, receiver, threadtitle, message) {
 	Meteor.users.update(senderId, {$addToSet: {threads: id }});
 	Meteor.users.update(receiverId, {$addToSet: {threads: id }});
 };
+
+addFriend2User = function (newfriend) {
+	if ( Meteor.userId() ) {
+		Meteor.users.update(Meteor.userId(), {$addToSet: {friends:  newfriend}});
+	} else {
+		console.log("not logged in; cannot add friend " + newfriend);
+	}
+}
+
 
 getMessages = function(user) {
 	var userId = findUser(user);
