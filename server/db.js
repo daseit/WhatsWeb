@@ -23,6 +23,20 @@ Meteor.publish("userData", function () {
   }
 });
 
+// server
+Meteor.publish("friends", function () {
+  return Meteor.users.find({}, {fields: {'username': 1}});
+  
+});
+
+// server
+Meteor.publish("myfriends", function () {
+  return myFriends.find({});
+  
+});
+
+
+
 
 
 function dateToString(date) {

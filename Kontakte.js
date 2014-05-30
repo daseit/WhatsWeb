@@ -7,6 +7,11 @@ Messages = new Meteor.Collection('mymessages');
 myFriends = new Meteor.Collection('myfriends');
 
 if (Meteor.isClient) {
+
+	
+
+
+
   //Template.hello.greeting = function () {
   //  return "Welcome to Kontakte.";
   //};
@@ -20,18 +25,19 @@ if (Meteor.isClient) {
   });*/
 
   findUser = function(name) {
+  
 	var id = 0;
-	var arr = Meteor.users.find({name: name}).fetch();
-	console.log(arr.length);
+	var arr = Meteor.users.find({username: name}).fetch();
+	console.log("array "+arr.length);
 	if (arr.length == 0)
 		return 0;
-	return arr[0].name;
+	return arr[0].username;
 }
   
   findFriend = function(name) {
 	var id = 0;
 	var arr = myFriends.find({name: name}).fetch();
-	console.log(arr.length);
+	console.log("array myFriends" +arr.length);
 	if (arr.length == 0)
 		return 0;
 	return arr;
@@ -72,6 +78,8 @@ Template.friends_item.events({'click .deleteContactButton' : function()
 
   Meteor.startup(function () {
     Backbone.history.start({ pushState: true });
+	Meteor.subscribe("friends");
+	Meteor.subscribe("myfriends");
   });
 
  
@@ -89,7 +97,7 @@ addFriend = function(newName){
 	  Friends._collection.insert(contact);
 	  console.log(contact.name + " " + contact.id); 
 	*/
-	
+	console.log(newName);
 	var getFriendName = findUser(newName);
 	console.log(getFriendName);
 	if (getFriendName == 0)
