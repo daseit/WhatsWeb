@@ -6,12 +6,16 @@
 
 <template name="friends_item">
     <div class="row">
-        <div class="col-md-2"><img src="hamster.jpg" class="profilePicture"></div>
-        <div class="col-md-9 profileNameWrapper">
-				<span class="profileName" id="friendName">{{name}}</span>
-		</div>
-		<div class="col-md-1 deleteContactButtonWrapper">
-			<input type="image" src="delete.png" class="deleteContactButton" />
+		<div class="contactInfoWrapper">
+			<div class="col-md-2 col-xs-2"><img src="hamster.jpg" 
+				class="img-responsive profilePicture" alt="Responsive image"></div>
+			<div class="col-md-9 col-xs-9 profileNameWrapper">
+					<span class="profileName" id="friendName">{{name}}</span>
+			</div>
+			<div class="col-md-1 col-xs-1 deleteContactButtonWrapper">
+				<button type="button" class="btn deleteContactButton" > <span class="glyphicon glyphicon-remove"></span></button>
+				<!--<input type="image" src="delete.png" class="deleteContactButton" />-->
+			</div>
 		</div>
     </div>
 </template>
