@@ -1,13 +1,29 @@
 ﻿<template name="main">
-    {{#if isChat}}
-        {{> Chat}}
-    {{/if}}
-    {{#if isKontakte}}
-        {{> Kontakte}}
-    {{/if}}
-    {{#if isEinstellungen}}
-        {{> Einstellungen}}
-    {{/if}}
+
+	{{#if currentUser}}
+		{{> header}}
+		<div class="container">
+			<div class="row">
+				{{#if isChat}}
+					{{> Chat}}
+				{{/if}}
+				{{#if isKontakte}}
+					{{> Kontakte}}
+				{{/if}}
+				{{#if isEinstellungen}}
+					{{> Einstellungen}}
+				{{/if}}
+			</div>
+		</div>
+    {{else}}
+		{{> logo}}
+		<div class="container">
+			<div class="row">
+				{{> AnmeldungRegistrierung}}
+			</div>
+		</div>
+	{{/if}}
+	
 </template>
 
 

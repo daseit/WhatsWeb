@@ -1,0 +1,56 @@
+/* CSS declarations go here */
+body { height: 100% }
+
+/* using border-box as box-sizing for all elements */
+* {
+	box-sizing: border-box;
+}
+
+/* overwrite bootstrap */
+.form-group label { font-weight: normal !important; }
+input { height: 35px !important; }
+
+
+/* own stuff */
+.wrapper{
+	width: 50%;
+	margin: 5% 25% 5% 25%;
+	position: relative;
+}
+.wrapper:after {
+	clear: both;
+}
+
+.anmeldung{
+	width: 50%;
+	padding-right: 5%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.anmeldung input,
+.registrierung input{ display: block; margin-bottom: 5%; width: 100%;}
+
+.registrierung{
+	width: 50%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	border-left: 1px solid #cccccc;
+	padding-left: 5%;
+}
+
+/*.form-horizontal{
+	margin-top: 50px;
+}*/
+
+@media screen and (max-width: 900px) {
+	.wrapper { width: 90%; margin: 5% }
+}
+@media screen and (max-width: 500px) {
+	.wrapper { width: 100%; margin: 0 }
+	.registrierung,
+	.anmeldung { position: relative; width: 100%; padding: 5%; }
+	.registrierung { border-left: 0px solid transparent; }
+}

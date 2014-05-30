@@ -1,0 +1,128 @@
+﻿<template name="AnmeldungRegistrierung">
+	
+	<div class="wrapper">
+		{{> anmeldung}}
+		{{> registrierung}}
+	</div>
+
+	<!--<link rel="stylesheet" href="./bootstrapValidator/css/bootstrapValidator.min.css"/>
+	<script type="text/javascript" src="./bootstrapValidator/js/bootstrapValidator.js"></script>-->
+
+	<script>
+		$(document).ready(function() {
+			$('#passwordForm').bootstrapValidator();
+		});
+	</script>
+</template>
+
+<template name="anmeldung">
+	<div class="anmeldung">
+		<h1>Anmeldung</h1>
+  
+		<input class="form-control" type="text" value="" placeholder="Benutzername" id="anm_email"/>
+		<input class="form-control" type="password" placeholder="Passwort" value="" id="anm_pw"/>
+		<input type="button" class="btn btn-primary" value="Login" id="anm_button"/>
+		<span id="login_failed"></span>
+	</div>
+</template>
+
+<template name="registrierung">
+	<div class="registrierung">
+		<h1>Registrierung</h1>
+  
+		<form id="passwordForm" method="post" class="form-horizontal"
+			data-bv-message="This value is not valid"
+			data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+			data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+			data-bv-feedbackicons-validating="glyphicon glyphicon-refresh"
+			data-bv-submitbuttons='button[type="button"]'>
+			
+			<div class="form-group">
+				<!--<label class="col-lg-3 control-label">E-Mail</label>-->
+				<div class="col-lg-12">
+					<input class="form-control" name="email" type="email" placeholder="E-Mail" id="reg_email"
+						
+						data-bv-emailaddress="true"
+						data-bv-emailaddress-message="The input is not a valid email address"
+						
+						data-bv-notempty="true"
+						data-bv-notempty-message="The E-Mail is required and cannot be empty." />
+						
+				</div>
+				
+				<!--<label class="col-lg-3 control-label">Benutzername</label>-->
+				<div class="col-lg-12">
+					<input type="text" class="form-control" name="username" placeholder="Benutzername" id="reg_user"
+					
+						data-bv-message="The username is not valid"
+
+						data-bv-notempty="true"
+						data-bv-notempty-message="The username is required and cannot be empty"
+
+						data-bv-regexp="true"
+						data-bv-regexp-regexp="[a-zA-Z0-9_\.]+"
+						data-bv-regexp-message="The username can only consist of alphabetical, number, dot and underscore"
+
+						data-bv-stringlength="true"
+						data-bv-stringlength-min="6"
+						data-bv-stringlength-max="30"
+						data-bv-stringlength-message="The username must be more than 6 and less than 30 characters long"
+
+						data-bv-different="true"
+						data-bv-different-field="password"
+						data-bv-different-message="The username and password cannot be the same as each other" />
+						
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<!--<label class="col-lg-3 control-label">Passwort</label>-->
+				<div class="col-lg-12">
+					<input type="password" class="form-control" name="password" placeholder="Passwort" id="reg_pw"
+						
+						data-bv-notempty="true"
+						data-bv-notempty-message="The password is required and cannot be empty."
+
+						data-bv-stringlength="true"
+						data-bv-stringlength-min="6"
+						data-bv-stringlength-message="The password must be more than 6 characters long."
+						
+						data-bv-identical="true"
+						data-bv-identical-field="confirmPassword"
+						data-bv-identical-message="The password and its confirm are not the same."
+
+						/>
+				</div>
+				
+				<!--<label class="col-lg-3 control-label">Passwort bestätigen</label>-->
+				<div class="col-lg-12">
+					<input type="password" class="form-control" name="confirmPassword" placeholder="Passwort bestätigen" id="reg_conf_pw"
+					
+						data-bv-notempty="true"
+						data-bv-notempty-message="The confirm password is required and cannot be empty."
+
+						data-bv-stringlength="true"
+						data-bv-stringlength-min="6"
+						data-bv-stringlength-message="The password must be more than 6 characters long."
+						
+						data-bv-identical="true"
+						data-bv-identical-field="password"
+						data-bv-identical-message="The password and its confirm are not the same."
+						
+						/>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-lg-12">
+					<button type="button" class="btn btn-primary" id="reg_button">Registrieren</button>
+				</div>
+			</div>
+		
+		</form>
+		
+		<span id="reg_failed"></span>
+		
+		
+	</div>
+</template>

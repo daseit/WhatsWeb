@@ -1,16 +1,28 @@
 <template name="header">
+	
+	{{> logo}}
+	{{> navi}}
+	{{> search}}
+	
+</template>
+
+<template name="logo">
 	<div class="row header">
 	  <div class="col-xs-3"></div>
 	  <div class="col-xs-6 logoWrapper"><img src="whatsweblogo.png" id="logo"/></div>
 	  <div class="col-xs-3 logoutButton"><button type="button" class="btn btn-default">Logout</button><p>Hallo Peter!</p></div>
 	</div>
-	
+</template>
+
+<template name="navi">
 	<ul class="nav nav-tabs nav-justified">
 	  <li> <a href="/kontakte">Kontakte</a></li>
 	  <li class="active"><a href="/">Chat</a></li>
 	  <li><a href="/einstellungen">Einstellungen</a></li>
 	</ul>
-	
+</template>
+
+<template name="search">
 	<center>
 		<div class="search">
 			<span class="glyphicon glyphicon-search"></span>
@@ -18,4 +30,3 @@
 		</div>
 	</center>
 </template>
-  
