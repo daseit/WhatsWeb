@@ -5,7 +5,7 @@
 if (Meteor.isClient) {
 
     // session vars for current chat
-    Session.set('chatUser', 'Hans');
+    Session.set('chatUser', 'undef' );
     Session.set('chatMate', 'Martin');
 
     // subscribe to demo databases
@@ -25,18 +25,24 @@ if (Meteor.isClient) {
     $(document).ready(function(){
         'use strict';
 
-        $('.friendList').click(function(event){
-            
+        // init page
+        // TODO: Remove the timeout of 500ms.
+        setTimeout( function() {
 
-            
-        });
+            // set chatUser session to current user
+            Session.set('chatUser', Meteor.user().username );
 
-        // set friend list item active
-        var $activeListElement = $('.friendlist a[name=' + Session.get('chatMate') + ']');
-        
-        if($activeListElement) {
-            $activeListElement.addClass('active');
-        }
+            // set chat mate to latest chat
+            // TODO: Get latest chat and store the username in chatMate session.
+
+            // highlight active chat mate
+            var $activeListElement = $('.friendlist a[name=' + Session.get('chatMate') + ']');
+            
+            if($activeListElement) {
+                $activeListElement.addClass('active');
+            }
+
+        }, 500);
 
     });
 
@@ -55,14 +61,17 @@ if (Meteor.isClient) {
 
     Template.messages_list.messages = function () {
         'use strict';
-
-        var messages = demoMsgDB.find({ 
+        
+        // TODO: store messages local
+        var messages = demoMsgDB.find({
             $or: [
                 // only messages 1) chatMate -> chatUser or 2) chatUser -> chatMate
                 { $and: [ {receiverId: Session.get('chatUser')}, {senderId: Session.get('chatMate')}] },
                 { $and: [ {receiverId: Session.get('chatMate')}, {senderId: Session.get('chatUser')}] }
             ]
         });
+
+        messages = messages.fetch();
 
         for(var i = 0; i < messages.length; i++ ) {
             var t = messages[i].timestamp;
@@ -142,7 +151,7 @@ if (Meteor.isClient) {
             Meteor.call('deleteChat');
         },
 
-        'click .friendlist' : function(e) {
+        'click .friendlist .listWrapper' : function(e) {
             'use strict';
 
             var nextChatMate = e.target.name;
